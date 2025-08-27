@@ -9,12 +9,14 @@ import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import { Features } from "./components/DemoComponents";
 import StreamHome from "./components/StreamHome";
+import WaitlistModal from "./components/WaitlistModal";
 import { MapPin, Video, Users, Calendar, Star, Heart } from "lucide-react";
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
+  const [showWaitlist, setShowWaitlist] = useState(false);
 
   const addFrame = useAddFrame();
 
@@ -24,10 +26,36 @@ export default function App() {
     }
   }, [setFrameReady, isFrameReady]);
 
+  // Check if user is first-time visitor
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisitedStream");
+    if (!hasVisited) {
+      setShowWaitlist(true);
+    }
+  }, []);
+
   const handleAddFrame = useCallback(async () => {
     const frameAdded = await addFrame();
     setFrameAdded(Boolean(frameAdded));
   }, [addFrame]);
+
+  const handleJoinWaitlist = async (email: string) => {
+    // Here you would typically send the email to your backend
+    // For now, we'll just simulate the API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Mark user as having visited
+    localStorage.setItem("hasVisitedStream", "true");
+
+    // You could also store the email in localStorage or send to your API
+    localStorage.setItem("waitlistEmail", email);
+  };
+
+  const handleCloseWaitlist = () => {
+    setShowWaitlist(false);
+    // Mark user as having visited even if they don't join
+    localStorage.setItem("hasVisitedStream", "true");
+  };
 
   const saveFrameButton = useMemo(() => {
     if (context && !context.client.added) {
@@ -115,6 +143,13 @@ export default function App() {
           </Button> */}
         </footer>
       </div>
+      {showWaitlist && (
+        <WaitlistModal
+          isOpen={showWaitlist}
+          onJoinWaitlist={handleJoinWaitlist}
+          onClose={handleCloseWaitlist}
+        />
+      )}
     </div>
   );
 }
