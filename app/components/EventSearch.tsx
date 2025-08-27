@@ -54,37 +54,37 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
 
   return (
     <div ref={searchRef} className="relative flex-1">
-      <form onSubmit={handleSearch} className="flex items-center gap-1.5">
-        <div className="flex-1 flex items-center bg-black/70 text-white rounded-full px-3 py-2">
-          <span className="mr-1.5 text-sm">🔍</span>
+      <form onSubmit={handleSearch} className="flex items-center gap-2">
+        <div className="flex-1 flex items-center bg-black/70 text-white rounded-full px-4 py-2.5">
+          <span className="mr-2">🔍</span>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="search for something"
-            className="bg-transparent placeholder-white/80 text-xs w-full focus:outline-none"
+            className="bg-transparent placeholder-white/80 text-sm w-full focus:outline-none"
             onFocus={() => query.trim() !== "" && setIsOpen(true)}
           />
         </div>
         <button
           type="submit"
-          className="w-8 h-8 rounded-full bg-black/80 text-white grid place-items-center"
+          className="w-10 h-10 rounded-full bg-black/80 text-white grid place-items-center"
           aria-label="search"
         >
-          <span className="text-xs">➤</span>
+          ➤
         </button>
       </form>
 
       {/* Search Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-lg shadow-lg border border-gray-200 max-h-48 overflow-y-auto z-10">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 max-h-64 overflow-y-auto z-10">
           {filteredEvents.map((event) => (
             <button
               key={event.id}
               type="button"
               onClick={() => handleEventSelect(event)}
-              className="w-full flex items-center gap-2 p-2 hover:bg-gray-50 text-left border-b border-gray-100 last:border-b-0"
+              className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 text-left border-b border-gray-100 last:border-b-0"
             >
-              <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={event.avatarUrl}
@@ -93,17 +93,17 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-xs text-gray-900 truncate">
+                <div className="font-medium text-sm text-gray-900 truncate">
                   {event.title}
                 </div>
-                <div className="text-[10px] text-gray-500">
+                <div className="text-xs text-gray-500">
                   @{event.username}
                   {event.isLive && (
-                    <span className="ml-1.5 text-red-500 font-medium">• LIVE</span>
+                    <span className="ml-2 text-red-500 font-medium">• LIVE</span>
                   )}
                 </div>
               </div>
-              <div className="text-[10px] text-gray-400">
+              <div className="text-xs text-gray-400">
                 📍
               </div>
             </button>
