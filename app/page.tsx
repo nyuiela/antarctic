@@ -10,6 +10,7 @@ import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import { Features } from "./components/DemoComponents";
 import StreamHome from "./components/StreamHome";
+import StreamHeader from "./components/StreamHeader";
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
@@ -58,9 +59,9 @@ export default function App() {
   }, [context, frameAdded, handleAddFrame]);
 
   return (
-    <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
-      <div className="w-full max-w-md mx-auto p-0 ">
-        <header className="flex justify-between items-center mb-3 h-11">
+    <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)] pt-0 mt-0">
+      <div className="w-full max-w-md mx-auto pt-0 mt-0">
+        <header className="flex justify-between items-center mb-3 h-0">
           <div>
             <div className="flex items-center space-x-2">
               {/* Wallet connect moved to StreamHeader */}
@@ -69,20 +70,21 @@ export default function App() {
           <div>{saveFrameButton}</div>
         </header>
 
-        <main className="flex-1">
+        <main className="flex-1 bg-red-00">
           {activeTab === "home" && <StreamHome />}
           {activeTab === "features" && <Features setActiveTab={setActiveTab} />}
         </main>
 
-        <footer className="mt-2 pt-4 flex justify-center">
-          <Button
+        <footer className="mt-2 pt-4 flex justify-between">
+          <StreamHeader />
+          {/* <Button
             variant="ghost"
             size="sm"
             className="text-[var(--ock-text-foreground-muted)] text-xs"
             onClick={() => openUrl("https://base.org/builders/minikit")}
           >
             Built on Base with MiniKit
-          </Button>
+          </Button> */}
         </footer>
       </div>
     </div>

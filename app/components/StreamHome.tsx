@@ -68,11 +68,11 @@ export default function StreamHome() {
   };
 
   return (
-    <div className="space-y-5 animate-fade-in w-full bg-red-00 p-4">
-      <StreamHeader />
+    <div className="space-y-3 animate-fade-in w-full bg-red-00">
+      {/* <StreamHeader /> */}
 
       {/* Main viewport card */}
-      <div className="relative rounded-3xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow-lg bg-red-00 h-80 w-full">
+      <div className="relative rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow-lg bg-red-00 h-[24rem] w-full ">
         {/* Mode preview background */}
         <div className="relative h-full">
           {mode === "map" && (
@@ -83,18 +83,18 @@ export default function StreamHome() {
 
           {mode === "camera" && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-white">
-              <span className="text-sm opacity-80">Camera preview</span>
+              <span className="text-xs opacity-80">Camera preview</span>
             </div>
           )}
 
           {mode === "screen" && (
             <div className="absolute inset-0 bg-[var(--app-gray)] flex items-center justify-center">
-              <span className="text-sm text-[var(--app-foreground-muted)]">Screen share</span>
+              <span className="text-xs text-[var(--app-foreground-muted)]">Screen share</span>
             </div>
           )}
 
           {/* Search bar */}
-          <div className="absolute left-4 right-4 top-4 flex items-center gap-2">
+          <div className="absolute left-3 right-3 top-3 flex items-center gap-2">
             <EventSearch
               events={events}
               onEventSelect={handleEventSelect}
@@ -103,35 +103,35 @@ export default function StreamHome() {
           </div>
 
           {/* Search here chip */}
-          <div className="absolute left-4 bottom-24">
+          <div className="absolute left-3 bottom-20">
             <button
               type="button"
-              className="bg-white/90 text-black rounded-full px-3 py-1 text-xs shadow"
+              className="bg-white/90 text-black rounded-full px-2 py-0.5 text-[10px] shadow"
             >
               🔎 search here
             </button>
           </div>
 
           {/* Mode segmented control */}
-          <div className="absolute left-4 bottom-4 right-4 flex items-center justify-between">
-            <div className="inline-flex items-center bg-black/70 text-white rounded-full p-1">
+          <div className="absolute left-3 bottom-3 right-3 flex items-center justify-between">
+            <div className="inline-flex items-center bg-black/70 text-white rounded-full p-0.5">
               {(["discover"] as const).map((label) => (
                 <span
                   key={label}
-                  className="px-3 py-1.5 text-xs rounded-full bg-white text-black"
+                  className="px-2 py-1 text-[10px] rounded-full bg-white text-black"
                 >
                   {label}
                 </span>
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               {filters.map((f) => (
                 <button
                   key={f}
                   type="button"
                   onClick={() => setActiveFilter(f)}
-                  className={`px-3 py-1.5 rounded-full text-xs backdrop-blur bg-white/90 ${activeFilter === f ? "bg-black text-white" : "text-black"
+                  className={`px-2 py-1 rounded-full text-[10px] backdrop-blur bg-white/90 ${activeFilter === f ? "bg-black text-white" : "text-black"
                     }`}
                 >
                   {f}
@@ -139,10 +139,10 @@ export default function StreamHome() {
               ))}
               <button
                 type="button"
-                className="w-8 h-8 rounded-full bg-white/90 text-black grid place-items-center"
+                className="w-6 h-6 rounded-full bg-white/90 text-black grid place-items-center"
                 aria-label="more"
               >
-                +
+                <span className="text-[10px]">+</span>
               </button>
             </div>
           </div>
@@ -150,20 +150,20 @@ export default function StreamHome() {
       </div>
 
       {/* Curations for you */}
-      <section className="space-y-3">
-        <h3 className="text-sm font-medium">curations for you</h3>
-        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+      <section className="space-y-2 p-2 bg-red-00">
+        <h3 className="text-xs font-medium">curations for you</h3>
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
           {curations.map((c) => (
             <div
               key={c.id}
-              className="min-w-[72%] rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow"
+              className="min-w-[65%] rounded-xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow"
             >
-              <div className="relative h-32">
+              <div className="relative h-24">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={c.image} alt={c.title} className="w-full h-full object-cover" />
-                <div className="absolute bottom-2 left-2 right-2 text-white">
-                  <div className="text-xs opacity-90">{c.author}</div>
-                  <div className="text-base font-semibold leading-tight">{c.title}</div>
+                <div className="absolute bottom-1.5 left-1.5 right-1.5 text-white">
+                  <div className="text-[10px] opacity-90">{c.author}</div>
+                  <div className="text-sm font-semibold leading-tight">{c.title}</div>
                 </div>
               </div>
             </div>
@@ -172,17 +172,17 @@ export default function StreamHome() {
       </section>
 
       {/* Curators for you */}
-      <section className="space-y-3">
-        <h3 className="text-sm font-medium">curators for you</h3>
-        <div className="flex gap-4 overflow-x-auto no-scrollbar pb-1">
+      <section className="space-y-2">
+        <h3 className="text-xs font-medium">curators for you</h3>
+        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
           {curators.map((u) => (
-            <div key={u.id} className="flex flex-col items-center min-w-[72px]">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-white shadow">
+            <div key={u.id} className="flex flex-col items-center min-w-[60px]">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white shadow">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={u.avatarUrl} alt={u.name} className="w-full h-full object-cover" />
               </div>
-              <div className="text-xs mt-1">{u.name}</div>
-              <div className="text-[10px] text-[var(--app-foreground-muted)]">👁️ {u.viewers}</div>
+              <div className="text-[10px] mt-1">{u.name}</div>
+              <div className="text-[8px] text-[var(--app-foreground-muted)]">👁️ {u.viewers}</div>
             </div>
           ))}
         </div>
