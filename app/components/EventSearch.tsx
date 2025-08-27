@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { type LiveEvent } from "./EventsMap";
-import { Search } from "lucide-react";
+import { Search, MapPin, Send } from "lucide-react";
 
 type Props = {
   events: LiveEvent[];
@@ -14,7 +14,7 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filteredEvents, setFilteredEvents] = useState<LiveEvent[]>([]);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -54,10 +54,10 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
   };
 
   return (
-    <div ref={searchRef} className="relative flex-1 mt-5">
+    <div ref={searchRef} className="relative flex-1">
       <form onSubmit={handleSearch} className="flex items-center gap-2">
         <div className="flex-1 flex items-center bg-black/70 text-white rounded-full px-4 py-2.5">
-          <span className="mr-2"><Search /></span>
+          <Search className="w-4 h-4 mr-2 text-white/80" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -68,22 +68,22 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
         </div>
         <button
           type="submit"
-          className="w-10 h-10 rounded-full bg-black/80 text-white grid place-items-center"
+          className="w-10 h-10 rounded-full bg-black/80 text-white grid place-items-center hover:bg-black/90 transition-colors"
           aria-label="search"
         >
-          ➤
+          <Send className="w-4 h-4" />
         </button>
       </form>
 
       {/* Search Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border-none border-gray-300 max-h-64 overflow-y-auto z-10 w-[90%]">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 max-h-64 overflow-y-auto z-10">
           {filteredEvents.map((event) => (
             <button
               key={event.id}
               type="button"
               onClick={() => handleEventSelect(event)}
-              className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 text-left border-b border-gray-100 last:border-b-0"
+              className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 text-left border-b border-gray-100 last:border-b-0 transition-colors"
             >
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,7 +105,7 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
                 </div>
               </div>
               <div className="text-xs text-gray-400">
-                📍
+                <MapPin className="w-3 h-3" />
               </div>
             </button>
           ))}

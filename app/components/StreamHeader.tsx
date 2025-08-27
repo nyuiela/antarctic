@@ -1,11 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Eye,
+  X,
+  Youtube,
+  Twitch,
+  User
+} from "lucide-react";
 
 type Platform = {
   id: string;
   name: string;
-  icon: string; // emoji for simplicity; swap for svg later
+  icon: React.ReactNode;
   connected: boolean;
   live: boolean;
 };
@@ -13,10 +20,34 @@ type Platform = {
 export default function StreamHeader() {
   const [showModal, setShowModal] = useState(false);
   const [platforms, setPlatforms] = useState<Platform[]>([
-    { id: "fc", name: "Farcaster", icon: "🟣", connected: true, live: true },
-    { id: "yt", name: "YouTube", icon: "▶️", connected: false, live: false },
-    { id: "tw", name: "Twitch", icon: "💜", connected: false, live: false },
-    { id: "x", name: "X", icon: "𝕏", connected: false, live: false },
+    {
+      id: "fc",
+      name: "Farcaster",
+      icon: <div className="w-4 h-4 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">F</div>,
+      connected: true,
+      live: true
+    },
+    {
+      id: "yt",
+      name: "YouTube",
+      icon: <Youtube className="w-4 h-4 text-red-600" />,
+      connected: false,
+      live: false
+    },
+    {
+      id: "tw",
+      name: "Twitch",
+      icon: <Twitch className="w-4 h-4 text-purple-600" />,
+      connected: false,
+      live: false
+    },
+    {
+      id: "x",
+      name: "X",
+      icon: <X className="w-4 h-4 text-black dark:text-white" />,
+      connected: false,
+      live: false
+    },
   ]);
 
   const isAnyLive = platforms.some((p) => p.live);
@@ -26,8 +57,8 @@ export default function StreamHeader() {
       <div className="flex items-center justify-between py-2 px-4">
         {/* Wallet connect compact pill */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--app-card-bg)] border border-[var(--app-card-border)] text-sm">
-            <div className="w-5 h-5 rounded-full bg-[var(--app-accent)]"></div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--app-card-bg)] border border-[var(--app-card-border)] text-sm cursor-pointer hover:bg-[var(--app-gray)] transition-colors">
+            <User className="w-4 h-4 text-[var(--app-accent)]" />
             <span className="text-[var(--app-foreground)]">Connect Wallet</span>
           </div>
         </div>
@@ -36,7 +67,7 @@ export default function StreamHeader() {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 rounded-full border border-[var(--app-card-border)] bg-[var(--app-card-bg)] px-3 py-1.5"
+          className="flex items-center gap-2 rounded-full border border-[var(--app-card-border)] bg-[var(--app-card-bg)] px-3 py-1.5 hover:bg-[var(--app-gray)] transition-colors"
         >
           <div className="flex -space-x-1">
             {platforms.slice(0, 3).map((p) => (
@@ -49,30 +80,37 @@ export default function StreamHeader() {
               </span>
             ))}
           </div>
-          <span className={`text-xs ${isAnyLive ? "text-red-500" : "text-[var(--app-foreground-muted)]"}`}>
-            {isAnyLive ? "LIVE" : "offline"}
-          </span>
+          <div className="flex items-center gap-1">
+            <Eye className="w-3 h-3" />
+            <span className={`text-xs ${isAnyLive ? "text-red-500" : "text-[var(--app-foreground-muted)]"}`}>
+              {isAnyLive ? "LIVE" : "offline"}
+            </span>
+          </div>
         </button>
       </div>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-transparent backdrop-blur-sm top-[-10rem] left-0 ">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-transparent backdrop-blur-sm top-[-10rem] left-0">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowModal(false)} />
           <div className="relative w-full max-w-md mx-auto bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-t-2xl sm:rounded-2xl shadow-xl p-4 bg-background">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-base font-semibold">Connect streaming platforms</h3>
-              <button type="button" onClick={() => setShowModal(false)} className="text-lg px-2 py-1">✕</button>
+              <button type="button" onClick={() => setShowModal(false)} className="text-sm px-2 py-1 hover:bg-gray-100 rounded">✕</button>
             </div>
 
             <div className="space-y-2">
               {platforms.map((p) => (
                 <div key={p.id} className="flex items-center justify-between rounded-xl border border-[var(--app-card-border)] p-3 bg-background">
                   <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 grid place-items-center text-base rounded-full bg-[var(--app-gray)]">{p.icon}</span>
+                    <span className="w-7 h-7 grid place-items-center text-base rounded-full bg-[var(--app-gray)]">
+                      {p.icon}
+                    </span>
                     <div className="text-sm">
-                      <div className="font-medium">{p.name}</div>
-                      <div className="text-[10px] text-[var(--app-foreground-muted)]">{p.live ? "live now" : p.connected ? "connected" : "not connected"}</div>
+                      <div className="font-medium text-foreground">{p.name}</div>
+                      <div className="text-[10px] text-[var(--app-foreground-muted)]">
+                        {p.live ? "live now" : p.connected ? "connected" : "not connected"}
+                      </div>
                     </div>
                   </div>
                   <button
@@ -84,7 +122,10 @@ export default function StreamHeader() {
                         ),
                       )
                     }
-                    className={`text-xs px-3 py-1.5 rounded-full border ${p.connected ? "bg-black text-white" : "bg-transparent"}`}
+                    className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${p.connected
+                      ? "bg-black text-white hover:bg-gray-800"
+                      : "bg-transparent hover:bg-gray-100"
+                      }`}
                   >
                     {p.connected ? "Disconnect" : "Connect"}
                   </button>
@@ -93,8 +134,16 @@ export default function StreamHeader() {
             </div>
 
             <div className="mt-3 flex items-center justify-between">
-              <div className="text-[11px] text-[var(--app-foreground-muted)]">Toggle a platform to connect; going live will reflect here.</div>
-              <button type="button" className="text-sm px-3 py-1.5 rounded-lg border" onClick={() => setShowModal(false)}>Done</button>
+              <div className="text-[11px] text-[var(--app-foreground-muted)]">
+                Toggle a platform to connect; going live will reflect here.
+              </div>
+              <button
+                type="button"
+                className="text-sm px-3 py-1.5 rounded-lg border hover:bg-gray-100 transition-colors"
+                onClick={() => setShowModal(false)}
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>

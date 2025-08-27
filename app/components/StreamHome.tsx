@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import StreamHeader from "./StreamHeader";
 import EventsMap, { type LiveEvent, type EventsMapRef } from "./EventsMap";
 import EventSearch from "./EventSearch";
+import { Camera, ChevronUp, Monitor, Plus, Eye } from "lucide-react";
 
 type Mode = "map" | "camera" | "screen";
 
@@ -133,13 +134,19 @@ export default function StreamHome() {
 
           {mode === "camera" && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-white">
-              <span className="text-sm opacity-80">Camera preview</span>
+              <div className="flex flex-col items-center gap-2">
+                <Camera className="w-8 h-8 opacity-80" />
+                <span className="text-sm opacity-80">Camera preview</span>
+              </div>
             </div>
           )}
 
           {mode === "screen" && (
             <div className="absolute inset-0 bg-[var(--app-gray)] flex items-center justify-center">
-              <span className="text-sm text-[var(--app-foreground-muted)]">Screen share</span>
+              <div className="flex flex-col items-center gap-2">
+                <Monitor className="w-8 h-8 text-[var(--app-foreground-muted)]" />
+                <span className="text-sm text-[var(--app-foreground-muted)]">Screen share</span>
+              </div>
             </div>
           )}
 
@@ -158,9 +165,13 @@ export default function StreamHome() {
             <div className="inline-flex items-center bg-black/70 text-white rounded-full p-1">
               <button
                 onClick={() => setShowDiscover(!showDiscover)}
-                className={`px-3 py-1.5 text-xs rounded-full transition-all ${showDiscover ? "bg-white text-black" : "text-white"
-                  }`}
+                className={`px-3 py-1.5 text-xs rounded-full transition-all flex items-center gap-1 
+                  // $
+                  // {showDiscover ? "bg-white text-black" : "text-white"}
+
+                  `}
               >
+                <ChevronUp className={`w-3 h-3 transition-transform ${showDiscover ? 'rotate-180' : ''}`} />
                 discover
               </button>
             </div>
@@ -171,7 +182,7 @@ export default function StreamHome() {
                   key={f}
                   type="button"
                   onClick={() => setActiveFilter(f)}
-                  className={`px-3 py-1.5 rounded-full text-xs backdrop-blur shadow-sm bg-background  ${activeFilter === f ? "bg-background text-blue-600" : "text-foreground"
+                  className={`px-3 py-1.5 rounded-full text-xs shadow-sm bg-white/60 dark:bg-black/40 text-foreground ${activeFilter === f ? " bg-background text-blue-600" : "text-foreground"
                     }`}
                 >
                   {f}
@@ -179,10 +190,10 @@ export default function StreamHome() {
               ))}
               <button
                 type="button"
-                className="w-8 h-8 rounded-full bg-white/90 text-black grid place-items-center"
+                className="w-8 h-8 rounded-full bg-white/90 text-black grid place-items-center hover:bg-white transition-colors"
                 aria-label="more"
               >
-                +
+                <Plus className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -190,47 +201,50 @@ export default function StreamHome() {
       </div>
 
       {/* Discover Events Section */}
-      {showDiscover && (
-        <section className="space-y-3 px-4">
-          <h3 className="text-sm font-medium">discover events</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {discoverEvents.map((event) => (
-              <div
-                key={event.id}
-                className="rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] cursor-pointer hover:shadow-lg transition-shadow shadow-none relative h-32"
-                onClick={() => handleEventSelect(event)}
-              >
-                {/* Background image covering the whole card */}
-                <div className="absolute inset-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={event.avatarUrl} alt={event.title} className="w-full h-full object-cover" />
-                </div>
-
-                {/* Gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                {/* Live indicator */}
-                {event.isLive && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
-                    LIVE
+      {
+        showDiscover && (
+          <section className="space-y-3 px-4">
+            <h3 className="text-sm font-medium">discover events</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {discoverEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] cursor-pointer hover:shadow-lg transition-shadow shadow-none relative h-32"
+                  onClick={() => handleEventSelect(event)}
+                >
+                  {/* Background image covering the whole card */}
+                  <div className="absolute inset-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={event.avatarUrl} alt={event.title} className="w-full h-full object-cover" />
                   </div>
-                )}
 
-                {/* Viewer count */}
-                <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">
-                  👁️ {event.viewers}
-                </div>
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                {/* Text content */}
-                <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
-                  <div className="font-medium text-sm truncate text-white drop-shadow-sm">{event.title}</div>
-                  <div className="text-xs text-white/80 drop-shadow-sm">@{event.username}</div>
+                  {/* Live indicator */}
+                  {event.isLive && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
+                      LIVE
+                    </div>
+                  )}
+
+                  {/* Viewer count */}
+                  <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10 flex items-center gap-1">
+                    <Eye className="w-3 h-3" />
+                    {event.viewers}
+                  </div>
+
+                  {/* Text content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
+                    <div className="font-medium text-sm truncate text-white drop-shadow-sm">{event.title}</div>
+                    <div className="text-xs text-white/80 drop-shadow-sm">@{event.username}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+              ))}
+            </div>
+          </section>
+        )
+      }
 
       {/* Curations for you */}
       <section className="space-y-3 px-4">
@@ -265,12 +279,15 @@ export default function StreamHome() {
                 <img src={u.avatarUrl} alt={u.name} className="w-full h-full object-cover" />
               </div>
               <div className="text-xs mt-1">{u.name}</div>
-              <div className="text-[10px] text-[var(--app-foreground-muted)]">👁️ {u.viewers}</div>
+              <div className="text-[10px] text-[var(--app-foreground-muted)] flex items-center gap-1">
+                <Eye className="w-3 h-3" />
+                {u.viewers}
+              </div>
             </div>
           ))}
         </div>
       </section>
-    </div>
+    </div >
   );
 }
 
