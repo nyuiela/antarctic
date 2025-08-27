@@ -25,6 +25,7 @@ export interface EventsMapRef {
 // Falls back to a static image background otherwise.
 const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -57,8 +58,11 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
   }));
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let map: any = null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let mapboxgl: any = null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let markers: any[] = [];
 
     async function init() {
@@ -136,10 +140,10 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
 
         // Add invisible click layer for better touch targets
         const geojson = {
-          type: "FeatureCollection",
+          type: "FeatureCollection" as const,
           features: events.map((ev) => ({
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [ev.lng, ev.lat] },
+            type: "Feature" as const,
+            geometry: { type: "Point" as const, coordinates: [ev.lng, ev.lat] },
             properties: { id: ev.id },
           })),
         };
@@ -156,10 +160,14 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
             }
           });
         } else {
-          map.getSource("events").setData(geojson);
+          const source = map.getSource("events");
+          if (source) {
+            source.setData(geojson);
+          }
         }
 
         // Add click handler for invisible layer
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.on("click", "touch-points", (e: any) => {
           const feature = e.features?.[0];
           if (!feature) return;
