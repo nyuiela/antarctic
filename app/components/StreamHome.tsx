@@ -11,6 +11,8 @@ export default function StreamHome() {
   const [mode] = useState<Mode>("map");
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [events, setEvents] = useState<LiveEvent[]>([]);
+  const [showDiscover, setShowDiscover] = useState(false);
+  const [searchBarVisible, setSearchBarVisible] = useState(true);
   const mapRef = useRef<EventsMapRef>(null);
 
   const filters = ["all", "eat", "café", "bar"]; // exact labels per screenshot
@@ -33,6 +35,50 @@ export default function StreamHome() {
       clearInterval(t);
     };
   }, []);
+
+  // Simulate more events for discover section
+  const discoverEvents = [
+    {
+      id: "d1",
+      title: "Brooklyn Bridge Walk",
+      username: "cityexplorer",
+      lat: 40.7061,
+      lng: -73.9969,
+      isLive: true,
+      avatarUrl: "/icon.png",
+      viewers: 156,
+    },
+    {
+      id: "d2",
+      title: "Central Park Picnic",
+      username: "naturelover",
+      lat: 40.7829,
+      lng: -73.9654,
+      isLive: false,
+      avatarUrl: "/logo.png",
+      viewers: 89,
+    },
+    {
+      id: "d3",
+      title: "Times Square Lights",
+      username: "nycnight",
+      lat: 40.7580,
+      lng: -73.9855,
+      isLive: true,
+      avatarUrl: "/splash.png",
+      viewers: 234,
+    },
+    {
+      id: "d4",
+      title: "High Line Walk",
+      username: "urbanhiker",
+      lat: 40.7484,
+      lng: -74.0047,
+      isLive: false,
+      avatarUrl: "/hero.png",
+      viewers: 67,
+    },
+  ];
 
   const curations = [
     {
@@ -67,17 +113,21 @@ export default function StreamHome() {
     console.log("Search query:", searchQuery);
   };
 
+  const handleMapDrag = (isDragging: boolean) => {
+    setSearchBarVisible(!isDragging);
+  };
+
   return (
     <div className="space-y-5 animate-fade-in w-full bg-red-00">
-      {/* <StreamHeader /> */}
+      <StreamHeader />
 
       {/* Main viewport card */}
-      <div className="relative rounded-3xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow-lg bg-red-00 h-80 w-full">
+      <div className="relative rounded-3xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] bg-red-00 h-[30rem] w-full shadow-none">
         {/* Mode preview background */}
         <div className="relative h-full">
           {mode === "map" && (
             <div className="absolute inset-0">
-              <EventsMap ref={mapRef} events={events} />
+              <EventsMap ref={mapRef} events={events} onMapDrag={handleMapDrag} />
             </div>
           )}
 
@@ -93,8 +143,9 @@ export default function StreamHome() {
             </div>
           )}
 
-          {/* Search bar */}
-          <div className="absolute left-4 right-4 top-4 flex items-center gap-2">
+          {/* Search bar - responsive to map dragging */}
+          <div className={`absolute left-4 right-4 top-4 flex items-center gap-2 transition-all duration-300 ${searchBarVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+            }`}>
             <EventSearch
               events={events}
               onEventSelect={handleEventSelect}
@@ -102,27 +153,16 @@ export default function StreamHome() {
             />
           </div>
 
-          {/* Search here chip */}
-          <div className="absolute left-4 bottom-24">
-            <button
-              type="button"
-              className="bg-white/90 text-black rounded-full px-3 py-1 text-xs shadow"
-            >
-              🔎 search here
-            </button>
-          </div>
-
           {/* Mode segmented control */}
           <div className="absolute left-4 bottom-4 right-4 flex items-center justify-between">
             <div className="inline-flex items-center bg-black/70 text-white rounded-full p-1">
-              {(["discover"] as const).map((label) => (
-                <span
-                  key={label}
-                  className="px-3 py-1.5 text-xs rounded-full bg-white text-black"
-                >
-                  {label}
-                </span>
-              ))}
+              <button
+                onClick={() => setShowDiscover(!showDiscover)}
+                className={`px-3 py-1.5 text-xs rounded-full transition-all ${showDiscover ? "bg-white text-black" : "text-white"
+                  }`}
+              >
+                discover
+              </button>
             </div>
 
             <div className="flex items-center gap-2">
@@ -131,7 +171,7 @@ export default function StreamHome() {
                   key={f}
                   type="button"
                   onClick={() => setActiveFilter(f)}
-                  className={`px-3 py-1.5 rounded-full text-xs backdrop-blur bg-white/90 ${activeFilter === f ? "bg-black text-white" : "text-black"
+                  className={`px-3 py-1.5 rounded-full text-xs backdrop-blur shadow-sm bg-background  ${activeFilter === f ? "bg-background text-blue-600" : "text-foreground"
                     }`}
                 >
                   {f}
@@ -149,9 +189,52 @@ export default function StreamHome() {
         </div>
       </div>
 
+      {/* Discover Events Section */}
+      {showDiscover && (
+        <section className="space-y-3 px-4">
+          <h3 className="text-sm font-medium">discover events</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {discoverEvents.map((event) => (
+              <div
+                key={event.id}
+                className="rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] cursor-pointer hover:shadow-lg transition-shadow shadow-none relative h-32"
+                onClick={() => handleEventSelect(event)}
+              >
+                {/* Background image covering the whole card */}
+                <div className="absolute inset-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={event.avatarUrl} alt={event.title} className="w-full h-full object-cover" />
+                </div>
+
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                {/* Live indicator */}
+                {event.isLive && (
+                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
+                    LIVE
+                  </div>
+                )}
+
+                {/* Viewer count */}
+                <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">
+                  👁️ {event.viewers}
+                </div>
+
+                {/* Text content */}
+                <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
+                  <div className="font-medium text-sm truncate text-white drop-shadow-sm">{event.title}</div>
+                  <div className="text-xs text-white/80 drop-shadow-sm">@{event.username}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Curations for you */}
-      <section className="space-y-3 py-4 px-2">
-        <h3 className="text-sm font-medium">curations for you</h3>
+      <section className="space-y-3 px-4">
+        <h3 className="text-sm font-medium">Events for you</h3>
         <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
           {curations.map((c) => (
             <div
@@ -172,8 +255,8 @@ export default function StreamHome() {
       </section>
 
       {/* Curators for you */}
-      <section className="space-y-3 py-4 px-2">
-        <h3 className="text-sm font-medium">curators for you</h3>
+      <section className="space-y-3 px-4">
+        <h3 className="text-sm font-medium">Live Streams for you</h3>
         <div className="flex gap-4 overflow-x-auto no-scrollbar pb-1">
           {curators.map((u) => (
             <div key={u.id} className="flex flex-col items-center min-w-[72px]">

@@ -15,20 +15,46 @@ export type LiveEvent = {
 
 type Props = {
   events: LiveEvent[];
+  onMapDrag?: (isDragging: boolean) => void;
 };
 
 export interface EventsMapRef {
   focusOnEvent: (event: LiveEvent) => void;
 }
 
+// Hook to detect current theme
+function useTheme() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    // Check if user prefers dark mode
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateTheme = () => {
+      setTheme(mediaQuery.matches ? 'dark' : 'light');
+    };
+
+    // Set initial theme
+    updateTheme();
+
+    // Listen for theme changes
+    mediaQuery.addEventListener('change', updateTheme);
+
+    return () => mediaQuery.removeEventListener('change', updateTheme);
+  }, []);
+
+  return theme;
+}
+
 // Renders a real map when Mapbox GL is available and a token is set.
 // Falls back to a static image background otherwise.
-const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
+const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  const theme = useTheme();
 
   const center = useMemo(() => {
     if (events.length === 0) return [-73.957, 40.72];
@@ -36,6 +62,15 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
     const avgLat = events.reduce((s, e) => s + e.lat, 0) / events.length;
     return [avgLng, avgLat] as [number, number];
   }, [events]);
+
+  // Get appropriate Mapbox style based on theme
+  const mapStyle = useMemo(() => {
+    const style = theme === 'dark'
+      ? 'mapbox://styles/mapbox/dark-v11'
+      : 'mapbox://styles/mapbox/light-v11';
+    console.log('🗺️ Map style selected:', style, 'for theme:', theme);
+    return style;
+  }, [theme]);
 
   useImperativeHandle(ref, () => ({
     focusOnEvent: (event: LiveEvent) => {
@@ -75,18 +110,31 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
       }
 
       mapboxgl.accessToken = token;
+      console.log('🗺️ Creating map with style:', mapStyle);
       map = new mapboxgl.Map({
         container: containerRef.current,
-        style: "mapbox://styles/mapbox/streets-v12",
+        style: mapStyle,
         center,
         zoom: 12,
       });
 
       mapRef.current = map;
 
+      // Add drag event listeners
+      if (onMapDrag) {
+        map.on("dragstart", () => {
+          onMapDrag(true);
+        });
+
+        map.on("dragend", () => {
+          onMapDrag(false);
+        });
+      }
+
       map.on("load", () => {
         setMapReady(true);
-        console.log("Map loaded, creating markers for", events.length, "events");
+        console.log("🗺️ Map loaded with style:", mapStyle);
+        console.log("🗺️ Creating markers for", events.length, "events");
 
         // Create markers for each event
         markers = events.map((ev) => {
@@ -208,7 +256,9 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
       markers.forEach((m) => m.remove?.());
       if (map && map.remove) map.remove();
     };
-  }, [center, events, token]);
+  }, [center, events, token, onMapDrag, mapStyle]);
+
+  // Map recreates when theme changes due to mapStyle dependency in main useEffect
 
   if (!token) {
     return (
@@ -242,7 +292,15 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events }, ref) => {
     );
   }
 
-  return <div ref={containerRef} className="absolute inset-0" aria-label={mapReady ? "interactive map" : "loading map"} />;
+  return (
+    <div className="relative">
+      {/* Debug theme indicator */}
+      <div className="absolute top-2 left-2 z-20 bg-black/70 text-white px-2 py-1 rounded text-xs">
+        Theme: {theme} | Style: {mapStyle.includes('dark') ? 'Dark' : 'Light'}
+      </div>
+      <div ref={containerRef} className="absolute inset-0" aria-label={mapReady ? "interactive map" : "loading map"} />
+    </div>
+  );
 });
 
 EventsMap.displayName = "EventsMap";

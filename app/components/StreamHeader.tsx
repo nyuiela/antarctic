@@ -1,13 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ConnectWallet,
-  Wallet,
-  WalletDropdown,
-  WalletDropdownDisconnect,
-} from "@coinbase/onchainkit/wallet";
-import { Name, Avatar } from "@coinbase/onchainkit/identity";
 
 type Platform = {
   id: string;
@@ -30,22 +23,13 @@ export default function StreamHeader() {
 
   return (
     <>
-      <div className="flex items-center justify-between py-2 px-4 gap-5">
+      <div className="flex items-center justify-between py-2 px-4">
         {/* Wallet connect compact pill */}
         <div className="flex items-center gap-2">
-          <Wallet >
-            <ConnectWallet className="rounded-md border-[1px] border-gray-300 bg-transparent text-black hover:text-black hover:bg-white *:text-black *:bg-white">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--app-card-bg)] border border-[var(--app-card-border)] text-sm">
-                <Avatar className="w-5 h-5" />
-                <Name className="text-[var(--app-foreground)]" />
-              </div>
-            </ConnectWallet>
-            <WalletDropdown>
-              <div className="px-3 py-2">
-                <WalletDropdownDisconnect />
-              </div>
-            </WalletDropdown>
-          </Wallet>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--app-card-bg)] border border-[var(--app-card-border)] text-sm">
+            <div className="w-5 h-5 rounded-full bg-[var(--app-accent)]"></div>
+            <span className="text-[var(--app-foreground)]">Connect Wallet</span>
+          </div>
         </div>
 
         {/* Streaming platforms + live status pill */}
@@ -73,17 +57,17 @@ export default function StreamHeader() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-white/50 backdrop-blur-sm top-0 left-0">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-transparent backdrop-blur-sm top-[-10rem] left-0 ">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowModal(false)} />
-          <div className="relative w-full max-w-md mx-auto bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-t-2xl sm:rounded-2xl shadow-xl p-4 bg-white">
+          <div className="relative w-full max-w-md mx-auto bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-t-2xl sm:rounded-2xl shadow-xl p-4 bg-background">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-base font-semibold">Connect streaming platforms</h3>
-              <button type="button" onClick={() => setShowModal(false)} className="text-sm px-2 py-1">✕</button>
+              <button type="button" onClick={() => setShowModal(false)} className="text-lg px-2 py-1">✕</button>
             </div>
 
             <div className="space-y-2">
               {platforms.map((p) => (
-                <div key={p.id} className="flex items-center justify-between rounded-xl border border-[var(--app-card-border)] p-3 bg-white/50">
+                <div key={p.id} className="flex items-center justify-between rounded-xl border border-[var(--app-card-border)] p-3 bg-background">
                   <div className="flex items-center gap-3">
                     <span className="w-7 h-7 grid place-items-center text-base rounded-full bg-[var(--app-gray)]">{p.icon}</span>
                     <div className="text-sm">

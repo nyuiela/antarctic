@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { type LiveEvent } from "./EventsMap";
+import { Search } from "lucide-react";
 
 type Props = {
   events: LiveEvent[];
@@ -53,10 +54,10 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
   };
 
   return (
-    <div ref={searchRef} className="relative flex-1">
+    <div ref={searchRef} className="relative flex-1 mt-5">
       <form onSubmit={handleSearch} className="flex items-center gap-2">
         <div className="flex-1 flex items-center bg-black/70 text-white rounded-full px-4 py-2.5">
-          <span className="mr-2">🔍</span>
+          <span className="mr-2"><Search /></span>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -76,7 +77,7 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
 
       {/* Search Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 max-h-64 overflow-y-auto z-10">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border-none border-gray-300 max-h-64 overflow-y-auto z-10 w-[90%]">
           {filteredEvents.map((event) => (
             <button
               key={event.id}

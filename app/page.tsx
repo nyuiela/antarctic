@@ -3,14 +3,12 @@
 import {
   useMiniKit,
   useAddFrame,
-  useOpenUrl,
 } from "@coinbase/onchainkit/minikit";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import { Features } from "./components/DemoComponents";
 import StreamHome from "./components/StreamHome";
-import StreamHeader from "./components/StreamHeader";
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
@@ -18,7 +16,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("home");
 
   const addFrame = useAddFrame();
-  const openUrl = useOpenUrl();
 
   useEffect(() => {
     if (!isFrameReady) {
@@ -61,7 +58,7 @@ export default function App() {
   return (
     <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
       <div className="w-full max-w-md mx-auto p-0 ">
-        <header className="flex justify-between items-center mb-3 h-0">
+        <header className="flex justify-between items-center mb-0 h-0">
           <div>
             <div className="flex items-center space-x-2">
               {/* Wallet connect moved to StreamHeader */}
@@ -75,8 +72,26 @@ export default function App() {
           {activeTab === "features" && <Features setActiveTab={setActiveTab} />}
         </main>
 
-        <footer className="mt-2 pt-4 flex justify-between">
-          <StreamHeader />
+        <footer className="pt-4 flex justify-center items-center w-full bg-red-00 flex-col">
+          {/* <StreamHeader /> */}
+          <div className="w-full flex justify-start px-4 p-2 items-center bg-red-00">
+            Menu
+          </div>
+          <div className="px-4 flex justify-center items-center border-none border-gray-00 bg-gray-000  bg-background w-[90%] p-2 gap-4 overflow-x-auto mx-10 bg-red-00">
+
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background shrink-0">Go live 📍
+            </div>
+          </div>
           {/* <Button
             variant="ghost"
             size="sm"
