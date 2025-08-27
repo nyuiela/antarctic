@@ -14,6 +14,7 @@ export default function StreamHome() {
   const [events, setEvents] = useState<LiveEvent[]>([]);
   const [showDiscover, setShowDiscover] = useState(false);
   const [searchBarVisible, setSearchBarVisible] = useState(true);
+  const [selectedEventTitle, setSelectedEventTitle] = useState<string>("");
   const mapRef = useRef<EventsMapRef>(null);
 
   const filters = ["all", "eat", "café", "bar"]; // exact labels per screenshot
@@ -106,6 +107,7 @@ export default function StreamHome() {
   const handleEventSelect = (event: LiveEvent) => {
     console.log("Event selected from search:", event);
     console.log("Map ref available:", !!mapRef.current);
+    setSelectedEventTitle(event.title); // Set the selected event title
     mapRef.current?.focusOnEvent(event);
   };
 
@@ -157,6 +159,8 @@ export default function StreamHome() {
               events={events}
               onEventSelect={handleEventSelect}
               onSearch={handleSearch}
+              selectedEventTitle={selectedEventTitle}
+              onClearSelectedEvent={() => setSelectedEventTitle("")}
             />
           </div>
 

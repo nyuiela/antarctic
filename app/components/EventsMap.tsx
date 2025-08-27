@@ -260,148 +260,172 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) =
 
     const map = mapRef.current;
 
+    // Remove existing event listeners to prevent duplicates
+    map.off("click", "touch-points");
+
     // Clear existing markers first
     const existingMarkers = document.querySelectorAll('.event-marker');
     existingMarkers.forEach(el => {
-      if (el.parentNode) {
-        el.parentNode.removeChild(el);
+      try {
+        if (el.parentNode) {
+          el.parentNode.removeChild(el);
+        }
+      } catch (error) {
+        console.warn('Error removing marker:', error);
       }
     });
 
     // Create new markers for each event
     events.forEach((ev) => {
-      const el = document.createElement("div");
-      el.className = `event-marker rounded-full ring-2 ring-white shadow-lg overflow-hidden transition-all duration-200 ${ev.isLive ? "ring-offset-2 ring-offset-red-500 animate-pulse" : ""
-        }`;
-      el.style.width = "40px";
-      el.style.height = "40px";
-      el.style.cursor = "pointer";
-      el.style.transition = "all 0.2s ease";
-      el.style.position = "relative";
+      try {
+        const el = document.createElement("div");
+        el.className = `event-marker rounded-full ring-2 ring-white shadow-lg overflow-hidden transition-all duration-200 ${ev.isLive ? "ring-offset-2 ring-offset-red-500 animate-pulse" : ""
+          }`;
+        el.style.width = "40px";
+        el.style.height = "40px";
+        el.style.cursor = "pointer";
+        el.style.transition = "all 0.2s ease";
+        el.style.position = "relative";
 
-      // Create profile picture container
-      const img = document.createElement("img");
-      img.src = ev.avatarUrl;
-      img.alt = ev.username;
-      img.style.width = "100%";
-      img.style.height = "100%";
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "50%";
-      el.appendChild(img);
+        // Create profile picture container
+        const img = document.createElement("img");
+        img.src = ev.avatarUrl;
+        img.alt = ev.username;
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "cover";
+        img.style.borderRadius = "50%";
+        el.appendChild(img);
 
-      // Add live indicator dot for live events
-      if (ev.isLive) {
-        const liveDot = document.createElement("div");
-        liveDot.style.position = "absolute";
-        liveDot.style.top = "-2px";
-        liveDot.style.right = "-2px";
-        liveDot.style.width = "12px";
-        liveDot.style.height = "12px";
-        liveDot.style.backgroundColor = "#ef4444";
-        liveDot.style.borderRadius = "50%";
-        liveDot.style.border = "2px solid white";
-        liveDot.style.animation = "pulse 2s infinite";
-        el.appendChild(liveDot);
-      }
+        // Add live indicator dot for live events
+        if (ev.isLive) {
+          const liveDot = document.createElement("div");
+          liveDot.style.position = "absolute";
+          liveDot.style.top = "-2px";
+          liveDot.style.right = "-2px";
+          liveDot.style.width = "12px";
+          liveDot.style.height = "12px";
+          liveDot.style.backgroundColor = "#ef4444";
+          liveDot.style.borderRadius = "50%";
+          liveDot.style.border = "2px solid white";
+          liveDot.style.animation = "pulse 2s infinite";
+          el.appendChild(liveDot);
+        }
 
-      // Add hover effects
-      el.addEventListener("mouseenter", () => {
-        el.style.transform = "scale(1.1)";
-        el.style.boxShadow = "0 10px 25px rgba(0,0,0,0.3)";
-        el.style.zIndex = "1000";
-        setHoveredEvent(ev);
-      });
-
-      el.addEventListener("mouseleave", () => {
-        el.style.transform = "scale(1)";
-        el.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-        el.style.zIndex = "auto";
-        setHoveredEvent(null);
-      });
-
-      // Add click handler to marker
-      el.addEventListener("click", () => {
-        console.log("Marker clicked for event:", ev.title);
-        // Create enhanced popup on marker click
-        const html = `
-          <div style="min-width:200px;padding:8px">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-              <img src="${ev.avatarUrl}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" alt="${ev.username}" />
-              <div>
-                <div style="font-weight:600;font-size:14px;margin-bottom:2px">${ev.title}</div>
-                <div style="font-size:12px;opacity:.7">@${ev.username}</div>
-              </div>
-            </div>
-            ${ev.isLive ? '<div style="color:#ef4444;font-size:11px;margin:8px 0;display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;background:#ef4444;border-radius:50%;animation:pulse 2s infinite"></div>LIVE NOW</div>' : ''}
-            ${ev.platforms && ev.platforms.length > 0 ? `<div style="font-size:11px;opacity:.6;margin-bottom:8px">Platforms: ${ev.platforms.join(', ')}</div>` : ''}
-            <button id="watch-${ev.id}" style="width:100%;padding:8px 12px;border-radius:8px;background:#111827;color:#fff;font-size:12px;font-weight:500;border:none;cursor:pointer;transition:background 0.2s" onmouseover="this.style.background='#374151'" onmouseout="this.style.background='#111827'">Watch Stream</button>
-          </div>
-        `;
-        const popup = new mapboxgl.Popup({
-          offset: 12,
-          closeButton: true,
-          closeOnClick: false,
-          maxWidth: '250px'
-        })
-          .setLngLat([ev.lng, ev.lat])
-          .setHTML(html)
-          .addTo(map);
-
-        setTimeout(() => {
-          const btn = document.getElementById(`watch-${ev.id}`);
-          if (btn) {
-            btn.onclick = () => {
-              window.location.hash = `watch-${ev.id}`;
-              popup.remove();
-            };
+        // Add hover effects
+        el.addEventListener("mouseenter", () => {
+          try {
+            el.style.transform = "scale(1.1)";
+            el.style.boxShadow = "0 10px 25px rgba(0,0,0,0.3)";
+            el.style.zIndex = "1000";
+            setHoveredEvent(ev);
+          } catch (error) {
+            console.warn('Error in mouseenter:', error);
           }
-        }, 0);
-      });
+        });
 
-      new mapboxgl.Marker({ element: el })
-        .setLngLat([ev.lng, ev.lat])
-        .addTo(map);
+        el.addEventListener("mouseleave", () => {
+          try {
+            el.style.transform = "scale(1)";
+            el.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+            el.style.zIndex = "auto";
+            setHoveredEvent(null);
+          } catch (error) {
+            console.warn('Error in mouseleave:', error);
+          }
+        });
+
+        // Add click handler to marker
+        el.addEventListener("click", () => {
+          try {
+            console.log("Marker clicked for event:", ev.title);
+            // Create enhanced popup on marker click
+            const html = `
+              <div style="min-width:200px;padding:8px">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                  <img src="${ev.avatarUrl}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" alt="${ev.username}" />
+                  <div>
+                    <div style="font-weight:600;font-size:14px;margin-bottom:2px">${ev.title}</div>
+                    <div style="font-size:12px;opacity:.7">@${ev.username}</div>
+                  </div>
+                </div>
+                ${ev.isLive ? '<div style="color:#ef4444;font-size:11px;margin:8px 0;display:flex:align-items:center;gap:4px"><div style="width:8px;height:8px;background:#ef4444;border-radius:50%;animation:pulse 2s infinite"></div>LIVE NOW</div>' : ''}
+                ${ev.platforms && ev.platforms.length > 0 ? `<div style="font-size:11px;opacity:.6;margin-bottom:8px">Platforms: ${ev.platforms.join(', ')}</div>` : ''}
+                <button id="watch-${ev.id}" style="width:100%;padding:8px 12px;border-radius:8px;background:#111827;color:#fff;font-size:12px;font-weight:500;border:none;cursor:pointer;transition:background 0.2s" onmouseover="this.style.background='#374151'" onmouseout="this.style.background='#111827'">Watch Stream</button>
+              </div>
+            `;
+            const popup = new mapboxgl.Popup({
+              offset: 12,
+              closeButton: true,
+              closeOnClick: false,
+              maxWidth: '250px'
+            })
+              .setLngLat([ev.lng, ev.lat])
+              .setHTML(html)
+              .addTo(map);
+
+            setTimeout(() => {
+              const btn = document.getElementById(`watch-${ev.id}`);
+              if (btn) {
+                btn.onclick = () => {
+                  window.location.hash = `watch-${ev.id}`;
+                  popup.remove();
+                };
+              }
+            }, 0);
+          } catch (error) {
+            console.warn('Error in marker click:', error);
+          }
+        });
+
+        new mapboxgl.Marker({ element: el })
+          .setLngLat([ev.lng, ev.lat])
+          .addTo(map);
+      } catch (error) {
+        console.warn('Error creating marker for event:', ev.id, error);
+      }
     });
 
     // Update invisible click layer
-    const geojson = {
-      type: "FeatureCollection" as const,
-      features: events.map((ev) => ({
-        type: "Feature" as const,
-        geometry: { type: "Point" as const, coordinates: [ev.lng, ev.lat] },
-        properties: { id: ev.id },
-      })),
-    };
+    try {
+      const geojson = {
+        type: "FeatureCollection" as const,
+        features: events.map((ev) => ({
+          type: "Feature" as const,
+          geometry: { type: "Point" as const, coordinates: [ev.lng, ev.lat] },
+          properties: { id: ev.id },
+        })),
+      };
 
-    if (!map.getSource("events")) {
-      map.addSource("events", { type: "geojson", data: geojson });
-      map.addLayer({
-        id: "touch-points",
-        type: "circle",
-        source: "events",
-        paint: {
-          "circle-radius": 25,
-          "circle-opacity": 0
+      if (!map.getSource("events")) {
+        map.addSource("events", { type: "geojson", data: geojson });
+        map.addLayer({
+          id: "touch-points",
+          type: "circle",
+          source: "events",
+          paint: {
+            "circle-radius": 25,
+            "circle-opacity": 0
+          }
+        });
+      } else {
+        const source = map.getSource("events");
+        if (source) {
+          source.setData(geojson);
         }
-      });
-    } else {
-      const source = map.getSource("events");
-      if (source) {
-        source.setData(geojson);
       }
-    }
 
-    // Add click handler for invisible layer
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    map.on("click", "touch-points", (e: any) => {
-      const feature = e.features?.[0];
-      if (!feature) return;
-      const id = feature.properties?.id;
-      const ev = events.find((x) => x.id === id);
-      if (!ev) return;
+      // Add click handler for invisible layer
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map.on("click", "touch-points", (e: any) => {
+        const feature = e.features?.[0];
+        if (!feature) return;
+        const id = feature.properties?.id;
+        const ev = events.find((x) => x.id === id);
+        if (!ev) return;
 
-      console.log("Layer clicked for event:", ev.title);
-      const html = `
+        console.log("Layer clicked for event:", ev.title);
+        const html = `
         <div style="min-width:200px;padding:8px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
             <img src="${ev.avatarUrl}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" alt="${ev.username}" />
@@ -415,28 +439,31 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) =
           <button id="watch-${ev.id}" style="width:100%;padding:8px 12px;border-radius:8px;background:#111827;color:#fff;font-size:12px;font-weight:500;border:none;cursor:pointer;transition:background 0.2s" onmouseover="this.style.background='#374151'" onmouseout="this.style.background='#111827'">Watch Stream</button>
         </div>
       `;
-      const popup = new mapboxgl.Popup({
-        offset: 12,
-        closeButton: true,
-        closeOnClick: false,
-        maxWidth: '250px'
-      })
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(html)
-        .addTo(map);
+        const popup = new mapboxgl.Popup({
+          offset: 12,
+          closeButton: true,
+          closeOnClick: false,
+          maxWidth: '250px'
+        })
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(html)
+          .addTo(map);
 
-      setTimeout(() => {
-        const btn = document.getElementById(`watch-${ev.id}`);
-        if (btn) {
-          btn.onclick = () => {
-            window.location.hash = `watch-${ev.id}`;
-            popup.remove();
-          };
-        }
-      }, 0);
-    });
+        setTimeout(() => {
+          const btn = document.getElementById(`watch-${ev.id}`);
+          if (btn) {
+            btn.onclick = () => {
+              window.location.hash = `watch-${ev.id}`;
+              popup.remove();
+            };
+          }
+        }, 0);
+      });
+    } catch (error) {
+      console.warn('Error updating invisible click layer:', error);
+    }
 
-  }, [events, mapReady]); // Only run when events or mapReady changes
+  }, [events, mapReady, mapboxgl]); // Include mapboxgl in dependencies
 
   if (!token) {
     return (

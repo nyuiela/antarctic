@@ -8,13 +8,23 @@ type Props = {
   events: LiveEvent[];
   onEventSelect: (event: LiveEvent) => void;
   onSearch: (query: string) => void;
+  selectedEventTitle?: string; // Add this prop to receive the selected event title
+  onClearSelectedEvent?: () => void; // Add callback to clear selected event
 };
 
-export default function EventSearch({ events, onEventSelect, onSearch }: Props) {
+export default function EventSearch({ events, onEventSelect, onSearch, selectedEventTitle, onClearSelectedEvent }: Props) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filteredEvents, setFilteredEvents] = useState<LiveEvent[]>([]);
   const searchRef = useRef<HTMLDivElement | null>(null);
+
+  // Update query when selectedEventTitle changes (when an event is selected from search)
+  useEffect(() => {
+    if (selectedEventTitle) {
+      setQuery(selectedEventTitle);
+      setIsOpen(false);
+    }
+  }, [selectedEventTitle]);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -60,7 +70,13 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
           <Search className="w-4 h-4 mr-2 text-white/80" />
           <input
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              // Clear selected event title when user starts typing
+              if (selectedEventTitle && e.target.value !== selectedEventTitle && onClearSelectedEvent) {
+                onClearSelectedEvent();
+              }
+            }}
             placeholder="search for something"
             className="bg-transparent placeholder-white/80 text-sm w-full focus:outline-none"
             onFocus={() => query.trim() !== "" && setIsOpen(true)}
@@ -77,13 +93,13 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
 
       {/* Search Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 max-h-64 overflow-y-auto z-10">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-background max-h-64 overflow-y-auto z-10">
           {filteredEvents.map((event) => (
             <button
               key={event.id}
               type="button"
               onClick={() => handleEventSelect(event)}
-              className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 text-left border-b border-gray-100 last:border-b-0 transition-colors"
+              className="w-full flex items-center gap-3 p-3 hover:bg-background text-left border-b border-background last:border-b-0 transition-colors bg-background"
             >
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -94,7 +110,7 @@ export default function EventSearch({ events, onEventSelect, onSearch }: Props) 
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm text-gray-900 truncate">
+                <div className="font-medium text-sm truncate text-foreground">
                   {event.title}
                 </div>
                 <div className="text-xs text-gray-500">
