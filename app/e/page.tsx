@@ -85,6 +85,7 @@ const EventsPage = () => {
             <div className="flex gap-4">
               {/* Event Image */}
               <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={event.image}
                   alt={event.title}

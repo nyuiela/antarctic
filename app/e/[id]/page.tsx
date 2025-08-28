@@ -1,16 +1,16 @@
-"use client"
 import React from 'react'
 import EventPage from '../../components/EventPage'
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-const EventDetailPage = ({ params }: Props) => {
+const EventDetailPage = async ({ params }: Props) => {
+  const { id } = await params
   return (
-    <EventPage eventId={params.id} />
+    <EventPage eventId={id} />
   )
 }
 

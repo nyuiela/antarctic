@@ -3,6 +3,10 @@ import { useEffect, useRef } from "react";
 import { Renderer, Triangle, Program, Mesh } from "ogl";
 import "./prisma.css";
 
+interface PrismContainer extends HTMLDivElement {
+  __prismIO?: IntersectionObserver;
+}
+
 const Prism = ({
   height = 3.5,
   baseWidth = 5.5,
@@ -38,7 +42,7 @@ const Prism = ({
   timeScale?: number;
   children: React.ReactNode;
 }) => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<PrismContainer>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -258,10 +262,10 @@ const Prism = ({
 
     const rotBuf = new Float32Array(9);
     const setMat3FromEuler = (
-      yawY,
-      pitchX,
-      rollZ,
-      out
+      yawY: number,
+      pitchX: number,
+      rollZ: number,
+      out: Float32Array
     ) => {
       const cy = Math.cos(yawY),
         sy = Math.sin(yawY);
@@ -318,10 +322,10 @@ const Prism = ({
       roll = 0;
     let targetYaw = 0,
       targetPitch = 0;
-    const lerp = (a, b, t) => a + (b - a) * t;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     const pointer = { x: 0, y: 0, inside: true };
-    const onMove = (e) => {
+    const onMove = (e: PointerEvent) => {
       const ww = Math.max(1, window.innerWidth);
       const wh = Math.max(1, window.innerHeight);
       const cx = ww * 0.5;
@@ -341,7 +345,7 @@ const Prism = ({
 
     let onPointerMove = null;
     if (animationType === "hover") {
-      onPointerMove = (e) => {
+      onPointerMove = (e: PointerEvent) => {
         onMove(e);
         startRAF();
       };
@@ -355,7 +359,7 @@ const Prism = ({
       program.uniforms.uUseBaseWobble.value = 1;
     }
 
-    const render = (t) => {
+    const render = (t: number) => {
       const time = (t - t0) * 0.001;
       program.uniforms.iTime.value = time;
 

@@ -1,4 +1,4 @@
-import { ReactNode, useState, useRef, useEffect } from "react";
+import { ReactNode, useState, useRef, useEffect, useCallback } from "react";
 import { Button, Icon } from "./DemoComponents";
 import { Html5QrcodeScanner } from "html5-qrcode";
 // import onchainevent from "../../public/onchain.jpeg"
@@ -200,7 +200,7 @@ export function EventCam({ }: HomeProps) {
     setPermissionError(null);
   };
 
-  const handleScanSuccess = (decodedText: string) => {
+  const handleScanSuccess = useCallback((decodedText: string) => {
     setScanResult(decodedText);
     setIsScanning(false);
 
@@ -211,7 +211,7 @@ export function EventCam({ }: HomeProps) {
       setShowConfirmation(true);
       stopScanner();
     }
-  };
+  }, []);
 
   const handleScanError = (error: unknown) => {
     console.log("QR Scan error:", error);

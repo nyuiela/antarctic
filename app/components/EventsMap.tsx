@@ -245,7 +245,7 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) =
         map.remove();
       }
     };
-  }, [token, onMapDrag, mapStyle]); // Remove center and events from dependencies
+  }, [token, onMapDrag, mapStyle, center, events]); // Include center and events in dependencies
 
   // Update map style when theme changes
   useEffect(() => {
@@ -295,6 +295,7 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) =
         img.style.height = "100%";
         img.style.objectFit = "cover";
         img.style.borderRadius = "50%";
+        // eslint-disable-next-line @next/next/no-img-element
         el.appendChild(img);
 
         // Add live indicator dot for live events

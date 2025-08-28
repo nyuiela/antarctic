@@ -4,7 +4,6 @@ import {
   Calendar,
   MapPin,
   Users,
-  Video,
   Eye,
   Clock,
 } from "lucide-react";
