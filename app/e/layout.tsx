@@ -12,7 +12,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         scale={3.6}
         hueShift={0}
         colorFrequency={1}
-        noise={2}
+        noise={0.5}
         glow={1}
       >
         {children}

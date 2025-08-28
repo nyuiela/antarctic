@@ -63,14 +63,15 @@ const EventsPage = () => {
   return (
     <div className="min-h-screen text-[var(--app-foreground)] bg-black/80 relative z-[20] pt-10">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-transparent backdrop-blur-sm border-none">
+      <div className="top-0 z-40 bg-transparent border-none">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold">Events</h1>
-          {/* <div className="flex items-center gap-2">
-            <button className="px-4 py-2 text-sm font-medium text-[var(--app-foreground)] border border-[var(--app-card-border)] rounded-lg hover:bg-[var(--app-gray)] transition-colors">
-              Filter
-            </button>
-          </div> */}
+          <Link
+            href="/e/create"
+            className="px-4 py-2 text-sm font-medium text-white bg-[var(--app-accent)] rounded-lg hover:bg-[var(--app-accent)]/90 transition-colors"
+          >
+            Create Event
+          </Link>
         </div>
       </div>
 
