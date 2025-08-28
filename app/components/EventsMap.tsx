@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from "react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 export type LiveEvent = {
   id: string;
@@ -483,7 +484,9 @@ const EventsMap = forwardRef<EventsMapRef, Props>(({ events, onMapDrag }, ref) =
       {hoveredEvent && (
         <div className="absolute top-4 left-4 z-20 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-3 max-w-xs">
           <div className="flex items-center gap-3 mb-2">
-            <img
+            <Image
+              width={32}
+              height={32}
               src={hoveredEvent.avatarUrl}
               alt={hoveredEvent.username}
               className="w-8 h-8 rounded-full object-cover"

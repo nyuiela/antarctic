@@ -2,6 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { MapPin, Users, Calendar } from "lucide-react"
+import Footer from '../components/footer'
 
 // Mock events data
 const events = [
@@ -131,7 +132,7 @@ const EventsPage = () => {
           </Link>
         ))}
       </div>
-
+      <Footer />
 
     </div>
   )

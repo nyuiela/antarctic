@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "./DemoComponents";
 import { Icon } from "./DemoComponents";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 
 type EventFormData = {
