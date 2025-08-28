@@ -101,7 +101,7 @@ export default function StreamHeader() {
             title={`Current theme: ${getThemeLabel()}. Click to cycle through themes.`}
           >
             {getThemeIcon()}
-            <span className="text-xs text-[var(--app-foreground)]">{getThemeLabel()}</span>
+            {/* <span className="text-xs text-[var(--app-foreground)]">{getThemeLabel()}</span> */}
           </button>
 
           {/* Streaming platforms + live status pill */}
@@ -135,7 +135,7 @@ export default function StreamHeader() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-transparent backdrop-blur-sm top-[-10rem] left-0">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowModal(false)} />
-          <div className="relative w-full max-w-md mx-auto bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-t-2xl sm:rounded-2xl shadow-xl p-4 bg-background">
+          <div className="relative w-full max-w-md mx-auto border border-[var(--app-card-border)] rounded-t-2xl sm:rounded-2xl shadow-xl p-4 bg-background">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-base font-semibold">Connect streaming platforms</h3>
               <button type="button" onClick={() => setShowModal(false)} className="text-xl px-2 py-1 hover:bg-gray-100 rounded">✕</button>

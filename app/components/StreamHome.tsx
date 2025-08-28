@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import StreamHeader from "./StreamHeader";
 import EventsMap, { type LiveEvent, type EventsMapRef } from "./EventsMap";
 import EventSearch from "./EventSearch";
@@ -12,7 +13,7 @@ export default function StreamHome() {
   const [mode] = useState<Mode>("map");
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [events, setEvents] = useState<LiveEvent[]>([]);
-  const [showDiscover, setShowDiscover] = useState(false);
+  const [showDiscover, setShowDiscover] = useState(true);
   const [searchBarVisible, setSearchBarVisible] = useState(true);
   const [selectedEventTitle, setSelectedEventTitle] = useState<string>("");
   const mapRef = useRef<EventsMapRef>(null);
@@ -211,10 +212,10 @@ export default function StreamHome() {
             <h3 className="text-sm font-medium">discover events</h3>
             <div className="grid grid-cols-2 gap-3">
               {discoverEvents.map((event) => (
-                <div
+                <Link
                   key={event.id}
-                  className="rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] cursor-pointer hover:shadow-lg transition-shadow shadow-none relative h-32"
-                  onClick={() => handleEventSelect(event)}
+                  href={`/e/${event.id}`}
+                  className="rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] cursor-pointer hover:shadow-lg transition-shadow shadow-none relative h-32 block"
                 >
                   {/* Background image covering the whole card */}
                   <div className="absolute inset-0">
@@ -243,7 +244,7 @@ export default function StreamHome() {
                     <div className="font-medium text-sm truncate text-white drop-shadow-sm">{event.title}</div>
                     <div className="text-xs text-white/80 drop-shadow-sm">@{event.username}</div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>
@@ -255,9 +256,10 @@ export default function StreamHome() {
         <h3 className="text-sm font-medium">Events for you</h3>
         <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
           {curations.map((c) => (
-            <div
+            <Link
               key={c.id}
-              className="min-w-[72%] rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow"
+              href={`/e/${c.id}`}
+              className="min-w-[72%] rounded-2xl overflow-hidden border border-[var(--app-card-border)] bg-[var(--app-card-bg)] shadow block"
             >
               <div className="relative h-32">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -267,7 +269,7 @@ export default function StreamHome() {
                   <div className="text-base font-semibold leading-tight">{c.title}</div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

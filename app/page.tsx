@@ -5,6 +5,7 @@ import {
   useAddFrame,
 } from "@coinbase/onchainkit/minikit";
 import { useEffect, useMemo, useState, useCallback } from "react";
+import Link from "next/link";
 import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import { Features } from "./components/DemoComponents";
@@ -112,10 +113,10 @@ export default function App() {
               <Video className="w-4 h-4" />
               Go live
             </div>
-            <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+            <Link href="/e" className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
               <MapPin className="w-4 h-4" />
               Events
-            </div>
+            </Link>
             <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
               <Users className="w-4 h-4" />
               Streamers
