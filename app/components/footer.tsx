@@ -15,31 +15,31 @@ const Footer = () => {
       </div>
       <div className="px-4 flex justify-center items-center border-none border-gray-00 bg-gray-000 w-[90%] p-2 gap-4 overflow-x-auto mx-10 bg-transparent">
 
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2" onClick={() => router.push('/')}>
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2" onClick={() => router.push('/')}>
           <Home className="w-4 h-4" />
           Home
         </div>
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <Video className="w-4 h-4" />
           Go live
         </div>
-        <Link href="/e" className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <Link href="/e" className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <MapPin className="w-4 h-4" />
           Events
         </Link>
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <Users className="w-4 h-4" />
           Streamers
         </div>
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <Calendar className="w-4 h-4" />
           Schedule
         </div>
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <Star className="w-4 h-4" />
           Featured
         </div>
-        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-background dark:border-gray-500 shrink-0 gap-2">
+        <div className="h-10 w-fit px-4 flex justify-center items-center border-[1px] border-gray-300 rounded-full bg-gray-000  bg-transparent dark:border-gray-500 shrink-0 gap-2">
           <Heart className="w-4 h-4" />
           Favorites
         </div>

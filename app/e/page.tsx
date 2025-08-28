@@ -62,14 +62,14 @@ const events = [
 
 const EventsPage = () => {
   return (
-    <div className="min-h-screen text-[var(--app-foreground)] bg-black/80 relative z-[20] pt-10">
+    <div className="min-h-screen text-[var(--events-foreground)] bg-black/80 relative z-[20] pt-10">
       {/* Header */}
       <div className="top-0 z-40 bg-transparent border-none">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold">Events</h1>
+          <h1 className="text-xl font-bold text-[var(--events-foreground)]">Events</h1>
           <Link
             href="/e/create"
-            className="px-4 py-2 text-sm font-medium text-white bg-[var(--app-accent)] rounded-lg hover:bg-[var(--app-accent)]/90 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-white bg-[var(--events-accent)] hover:bg-[var(--events-accent-hover)] rounded-lg transition-colors"
           >
             Create Event
           </Link>
@@ -82,7 +82,7 @@ const EventsPage = () => {
           <Link
             key={event.id}
             href={`/e/${event.id}`}
-            className="block border-b-[1px] border-[var(--app-card-border)] rounded-xl p-4 bg-transparent hover:bg-black/40 transition-colors"
+            className="block border-b-[1px] border-[var(--events-card-border)] rounded-xl p-4 bg-[var(--events-card-bg)] hover:bg-white/20 transition-colors"
           >
             <div className="flex gap-4">
               {/* Event Image */}
@@ -104,16 +104,16 @@ const EventsPage = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-lg font-semibold truncate">{event.title}</h3>
-                  <span className="px-2 py-1 bg-[var(--app-accent)] text-white text-xs rounded-full ml-2 flex-shrink-0">
+                  <span className="px-2 py-1 bg-[var(--events-accent)] text-white text-xs rounded-full ml-2 flex-shrink-0">
                     {event.category}
                   </span>
                 </div>
 
-                <p className="text-[12px] text-[var(--app-foreground-muted)] mb-3 line-clamp-2 text-ellipsis">
+                <p className="text-[12px] text-[var(--events-foreground-muted)] mb-3 line-clamp-2 text-ellipsis">
                   {event.description}
                 </p>
 
-                <div className="flex items-end gap-4 text-xs text-[var(--app-foreground-muted)] bg-red-00">
+                <div className="flex items-end gap-4 text-xs text-[var(--events-foreground-muted)]">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
                     {event.date}
