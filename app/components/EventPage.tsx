@@ -412,7 +412,7 @@ export default function EventPage({ eventId, }: Props) {
   // };
 
   return (
-    <div className="min-h-screen text-[var(--app-foreground)] bg-black/80 relative z-[20]">
+    <div className="min-h-screen text-[var(--events-foreground)] bg-black/80 relative z-[20]">
 
       {/* Header */}
       {/* <div className="sticky top-0 z-40 bg-[var(--app-background)] border-b border-[var(--app-card-border)]">
@@ -457,7 +457,7 @@ export default function EventPage({ eventId, }: Props) {
                 LIVE NOW
               </div>
             )}
-            <span className="px-2 py-1 bg-[var(--app-accent)] text-white text-xs rounded-full">
+            <span className="px-2 py-1 bg-[var(--events-accent)] text-white text-xs rounded-full">
               {event.category}
             </span>
           </div>
@@ -486,7 +486,7 @@ export default function EventPage({ eventId, }: Props) {
 
         {/* Live Streamers */}
         {liveStreamers.length > 0 && (
-          <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+          <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               Live Now
             </h2>
@@ -498,7 +498,7 @@ export default function EventPage({ eventId, }: Props) {
                     <img src={streamer.avatar} alt={streamer.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="text-xs mt-1">{streamer.name}</div>
-                  <div className="text-[10px] text-[var(--app-foreground-muted)] flex items-center gap-1">
+                  <div className="text-[10px] text-[var(--events-foreground-muted)] flex items-center gap-1">
                     <Eye className="w-3 h-3" />
                     {streamer.earnings}
                   </div>
@@ -511,15 +511,15 @@ export default function EventPage({ eventId, }: Props) {
         {/* Overview Content - All Sections Combined */}
         <div className="space-y-2">
           {/* Description */}
-          <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+          <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
             <h2 className="text-xl font-semibold mb-4">About This Event</h2>
-            <p className="text-[var(--app-foreground-muted)] leading-relaxed">
+            <p className="text-[var(--events-foreground-muted)] leading-relaxed">
               {event.description}
             </p>
           </div>
 
           {/* Location Section */}
-          <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+          <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               Location
@@ -527,7 +527,7 @@ export default function EventPage({ eventId, }: Props) {
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-medium mb-2">{event.location}</h3>
-                <div className="text-[var(--app-foreground-muted)] space-y-1">
+                <div className="text-[var(--events-foreground-muted)] space-y-1">
                   <p>📍 {event.location}</p>
                   {/* <p>📅 {event.date}</p> */}
                   {/* <p>🕒 {event.time}</p> */}
@@ -535,12 +535,12 @@ export default function EventPage({ eventId, }: Props) {
               </div>
 
               {/* Map Placeholder */}
-              <div className="bg-transparent border border-[var(--app-card-border)] rounded-lg p-4 text-center">
-                <div className="w-full h-32 bg-transparent border-none border-[var(--app-card-border)] rounded-lg flex items-center justify-center">
+              <div className="bg-transparent border border-[var(--events-card-border)] rounded-lg p-4 text-center">
+                <div className="w-full h-32 bg-transparent border-none border-[var(--events-card-border)] rounded-lg flex items-center justify-center">
                   <div className="text-center">
-                    <MapPin className="w-8 h-8 text-[var(--app-foreground-muted)] mx-auto mb-2" />
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Interactive Map</p>
-                    <p className="text-xs text-[var(--app-foreground-muted)]">Coordinates: {event.coordinates.lat}, {event.coordinates.lng}</p>
+                    <MapPin className="w-8 h-8 text-[var(--events-foreground-muted)] mx-auto mb-2" />
+                    <p className="text-sm text-[var(--events-foreground-muted)]">Interactive Map</p>
+                    <p className="text-xs text-[var(--events-foreground-muted)]">Coordinates: {event.coordinates.lat}, {event.coordinates.lng}</p>
                   </div>
                 </div>
               </div>
@@ -550,13 +550,13 @@ export default function EventPage({ eventId, }: Props) {
 
           {/* Hosts Section */}
           {event.hosts && event.hosts.length > 0 && (
-            <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+            <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 Hosts
               </h2>
               <div className="space-y-2">
                 {event.hosts.map((host, index) => (
-                  <div key={index} className="flex items-start gap-4 p-2 border-none border-[var(--app-card-border)] rounded-lg">
+                  <div key={index} className="flex items-start gap-4 p-2 border-none border-[var(--events-card-border)] rounded-lg">
                     <div className="flex-shrink-0">
                       <Image
                         width={0}
@@ -576,7 +576,7 @@ export default function EventPage({ eventId, }: Props) {
                                 href={host.social.twitter}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors"
+                                className="text-[var(--events-foreground-muted)] hover:text-[var(--events-foreground)] transition-colors"
                               >
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -588,7 +588,7 @@ export default function EventPage({ eventId, }: Props) {
                                 href={host.social.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors"
+                                className="text-[var(--events-foreground-muted)] hover:text-[var(--events-foreground)] transition-colors"
                               >
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
@@ -600,7 +600,7 @@ export default function EventPage({ eventId, }: Props) {
                                 href={host.social.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors"
+                                className="text-[var(--events-foreground-muted)] hover:text-[var(--events-foreground)] transition-colors"
                               >
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
@@ -610,9 +610,9 @@ export default function EventPage({ eventId, }: Props) {
                           </div>
                         )}
                       </div>
-                      <p className="text-xs text-[var(--app-accent)] font-medium mb-2">{host.role}</p>
+                      <p className="text-xs text-[var(--events-accent)] font-medium mb-2">{host.role}</p>
                       {/* {host.bio && (
-                        <p className="text-sm text-[var(--app-foreground-muted)] leading-relaxed">
+                        <p className="text-sm text-[var(--events-foreground-muted)] leading-relaxed">
                           {host.bio}
                         </p>
                       )} */}
@@ -624,14 +624,14 @@ export default function EventPage({ eventId, }: Props) {
           )}
 
           {/* Agenda Section */}
-          <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+          <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
             <h2 className="text-xl font-semibold mb-4">Agenda</h2>
-            <div className="text-[var(--app-foreground-muted)] leading-relaxed">
+            <div className="text-[var(--events-foreground-muted)] leading-relaxed">
               {event.agenda.map((agenda) => (
                 <div key={agenda.id}>
                   <h3 className="text-lg font-medium mb-2">{agenda.title}</h3>
-                  <p className="text-sm text-[var(--app-foreground-muted)] mb-2">{agenda.description}</p>
-                  <p className="text-sm text-[var(--app-foreground-muted)] mb-2">{agenda.startTime} - {agenda.endTime}</p>
+                  <p className="text-sm text-[var(--events-foreground-muted)] mb-2">{agenda.description}</p>
+                  <p className="text-sm text-[var(--events-foreground-muted)] mb-2">{agenda.startTime} - {agenda.endTime}</p>
                 </div>
               ))}
             </div>
@@ -641,14 +641,14 @@ export default function EventPage({ eventId, }: Props) {
 
 
           {/* Participants Section */}
-          <div className="border border-[var(--app-card-border)] rounded-xl p-6 border-none bg-transparent">
+          <div className="border border-[var(--events-card-border)] rounded-xl p-6 border-none bg-transparent">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Users className="w-5 h-5" />
               All Participants ({event.participants.length})
             </h2>
             <div className="space-y-3">
               {event.participants.map((participant) => (
-                <div key={participant.id} className="flex items-center justify-between p-3 rounded-lg bg-transparent border border-[var(--app-card-border)]">
+                <div key={participant.id} className="flex items-center justify-between p-3 rounded-lg bg-transparent border border-[var(--events-card-border)]">
                   <div className="flex items-center gap-3">
                     <Image
                       width={0}
@@ -659,7 +659,7 @@ export default function EventPage({ eventId, }: Props) {
                     />
                     <div>
                       <div className="font-medium">{participant.name}</div>
-                      <div className="text-sm text-[var(--app-foreground-muted)] capitalize">
+                      <div className="text-sm text-[var(--events-foreground-muted)] capitalize">
                         {participant.role}
                       </div>
                     </div>
@@ -673,7 +673,7 @@ export default function EventPage({ eventId, }: Props) {
                     )}
                     <div className="text-right">
                       <div className="font-medium">${participant.contribution.toLocaleString()}</div>
-                      <div className="text-xs text-[var(--app-foreground-muted)]">contribution</div>
+                      <div className="text-xs text-[var(--events-foreground-muted)]">contribution</div>
                     </div>
                   </div>
                 </div>
@@ -690,22 +690,22 @@ export default function EventPage({ eventId, }: Props) {
         className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out bg-black/40 border-none ${isScrolling ? 'translate-y-full' : 'translate-y-0'
           }`}
       >
-        <div className="bg-transparent backdrop-blur-sm border-t border-[var(--app-card-border)] p-4">
+        <div className="bg-transparent backdrop-blur-sm border-t border-[var(--events-card-border)] p-4">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between gap-4">
               <div className="flex-1">
-                <div className="text-sm font-medium text-[var(--app-foreground)]">
+                <div className="text-sm font-medium text-[var(--events-foreground)]">
                   {event.title}
                 </div>
-                <div className="text-xs text-[var(--app-foreground-muted)]">
+                <div className="text-xs text-[var(--events-foreground-muted)]">
                   {event.date} • {event.time}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button className="px-4 py-2 text-sm font-medium text-[var(--app-foreground)] border border-[var(--app-card-border)] rounded-lg hover:bg-[var(--app-gray)] transition-colors">
+                <button className="px-4 py-2 text-sm font-medium text-[var(--events-foreground)] border border-[var(--events-card-border)] rounded-lg hover:bg-[var(--events-accent)]/10 transition-colors">
                   Share
                 </button>
-                <button className="px-6 py-2 text-sm font-medium text-white bg-[var(--app-accent)] rounded-lg hover:bg-[var(--app-accent)]/90 transition-colors">
+                <button className="px-6 py-2 text-sm font-medium text-white bg-[var(--events-accent)] rounded-lg hover:bg-[var(--events-accent-hover)] transition-colors">
                   Register
                 </button>
               </div>

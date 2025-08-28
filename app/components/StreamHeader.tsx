@@ -101,7 +101,7 @@ export default function StreamHeader() {
             title={`Current theme: ${getThemeLabel()}. Click to cycle through themes.`}
           >
             {getThemeIcon()}
-            {/* <span className="text-xs text-[var(--app-foreground)]">{getThemeLabel()}</span> */}
+            <span className="text-xs text-[var(--app-foreground)]">{getThemeLabel()}</span>
           </button>
 
           {/* Streaming platforms + live status pill */}

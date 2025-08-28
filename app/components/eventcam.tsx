@@ -30,15 +30,15 @@ export function Card({
 
   return (
     <div
-      className={`bg-[var(--app-card-bg)] backdrop-blur-sm rounded-xl shadow-sm border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-lg ${className} ${onClick ? "cursor-pointer" : ""}`}
+      className={`bg-[var(--events-card-bg)] backdrop-blur-sm rounded-xl shadow-sm border border-[var(--events-card-border)] overflow-hidden transition-all hover:shadow-lg ${className} ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
       role={onClick ? "button" : undefined}
     >
       {title && (
-        <div className="px-5 py-3 border-b border-[var(--app-card-border)]">
-          <h3 className="text-lg font-medium text-[var(--app-foreground)]">
+        <div className="px-5 py-3 border-b border-[var(--events-card-border)]">
+          <h3 className="text-lg font-medium text-[var(--events-foreground)]">
             {title}
           </h3>
         </div>
@@ -333,7 +333,7 @@ export function EventCam({ }: HomeProps) {
             {/* Loading State */}
             {isScanning && !permissionError && cameraPermission === 'granted' && (
               <div className="text-center mt-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--app-accent)] mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--events-accent)] mx-auto"></div>
                 <p className="text-sm text-gray-600 mt-2">Initializing camera...</p>
               </div>
             )}
@@ -429,10 +429,10 @@ export function EventCam({ }: HomeProps) {
             </div>
 
             <div>
-              <h3 className="text-lg font-medium text-[var(--app-foreground)] mb-2">
+              <h3 className="text-lg font-medium text-[var(--events-foreground)] mb-2">
                 You&apos;re all set!
               </h3>
-              <p className="text-[var(--app-foreground-muted)]">
+              <p className="text-[var(--events-foreground-muted)]">
                 Your participation in &quot;{mockEvent.title}&quot; has been confirmed and added to your profile.
               </p>
             </div>
