@@ -36,11 +36,26 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // useEffect(() => {
+  //   const url = new URL(window.location.href)
+  //   const isMini =
+  //     url.pathname.startsWith('/mini') ||
+  //     url.searchParams.get('miniApp') === 'true'
+
+  //   if (isMini) {
+  //     import('@farcaster/miniapp-sdk').then(({ sdk }) => {
+  //       sdk.actions.ready()
+  //       console.log('sdk', sdk)
+  //     })
+  //   }
+  // }, [])
   return (
     <html lang="en">
       <body className="bg-background">
