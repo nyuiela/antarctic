@@ -1,3 +1,11 @@
+/**
+ * Stream - Decentralized Live Events Platform
+ * Tailwind CSS Configuration
+ * 
+ * Custom styling configuration for the Stream platform, including
+ * CSS variables for theming and custom animations for the UI.
+ */
+
 import type { Config } from "tailwindcss";
 
 const config: Config = {
